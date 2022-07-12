@@ -4,7 +4,7 @@ import Form from './Form'
 
 export default class App extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
       todos: [
         {
@@ -30,10 +30,9 @@ export default class App extends React.Component {
       })
     })
   }
-  handleAdd = e => {
-    console.log(this.state)
+  handleAdd = name => {
     const newTodo = {
-      task: "asdf",
+      name: name,
       id: Date.now(),
       completed: false
     }
@@ -43,14 +42,30 @@ export default class App extends React.Component {
     })
   }
 
+  handleToggle = (clickedId) => {
+
+    this.setState({
+      ...this.state,
+      todos: this.state.todos.map(todo => {
+        if (todo.id === clickedId) {
+          return {
+            ...todo,
+            completed: !todo.completed
+          }
+        } else {
+          return todo;
+        }
+      })
+    })
+  }
+
   render() {
     const { todos } = this.state;
-    console.log(todos)
     return (
       <div>
         <h1>Todos:</h1>
-        <TodoList todos={todos}/>
-        <Form handleClear={this.handleClear} handleAdd={this.handleAdd} />
+        <TodoList handleToggle={this.handleToggle} todos={todos}/>
+        <Form  handleClear={this.handleClear} handleAdd={this.handleAdd} />
         
       </div>
     )
